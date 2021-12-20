@@ -1,27 +1,86 @@
 <template>
   <Layout>
+    <!-- Page Header -->
+    <header class="masthead" style="background-image: url('/img/home-bg.jpg')">
+      <div class="overlay"></div>
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-md-10 mx-auto">
+            <div class="site-heading">
+              <h1>Clean Blog</h1>
+              <span class="subheading">A Blog Theme by Start Bootstrap</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
 
-    <!-- Learn how to use images here: https://gridsome.org/docs/images -->
-    <g-image alt="Example image" src="~/favicon.png" width="135" />
-
-    <h1>Hello, world!</h1>
-
-    <p>
-      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur excepturi labore tempore expedita, et iste tenetur suscipit explicabo! Dolores, aperiam non officia eos quod asperiores
-    </p>
-
-    <p class="home-links">
-      <a href="https://gridsome.org/docs/" target="_blank" rel="noopener">Gridsome Docs</a>
-      <a href="https://github.com/gridsome/gridsome" target="_blank" rel="noopener">GitHub</a>
-    </p>
-
+    <!-- Main Content -->
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <div class="post-preview" v-for="edge in $page.posts.edges" :key="edge.node.id">
+            <g-link :to="'/post/' + edge.node.id">
+              <h2 class="post-title">
+                {{ edge.node.title }}
+              </h2>
+            </g-link>
+            <p class="post-meta">Posted by
+              <a href="#">{{ edge.node.created_by.firstname + edge.node.created_by.lastname }}</a>
+              on {{ egde.node.created_at }}</p>
+            <p>
+              <span v-for="tag in edge.node.tag" :key="tag">
+                <g-link :to="/tag/ + tag.id" >{{  tag.title }} </g-link>
+                &nbsp;&nbsp;
+              </span>
+            </p>
+            <hr>
+          </div>
+          <!-- Pager -->
+          <pager :info="$page.posts.pageInfo"/>
+        </div>
+      </div>
+    </div>
   </Layout>
 </template>
 
+
+
 <script>
+// <page-query>
+// query($page: Int){
+//  posts: allStrapiPost (perPage: 2, page: $page) @paginate {
+//     pageInfo {
+//       totalPages
+//       currentPage
+//     }
+//     edge{
+//       node{
+//         id
+//         title
+//         created_by {
+//           id
+//           firstname
+//           lastname
+//         }
+//         tags {
+//           id
+//           title
+//         }
+//         created_at
+//       }
+//     }
+//   }
+// }
+// </page-query>
+import { Pager } from 'gridsome'
 export default {
+  name: 'HomePage',
   metaInfo: {
     title: 'Hello, world!'
+  },
+  components: {
+    Pager
   }
 }
 </script>
